@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: SEU_USUARIO_GITHUB/bruno-teixeira-advocacia  # ← trocar pelo seu usuário/repositório
+  repo: ailtonupe/bruno-teixeira-advocacia  # ← trocar pelo seu usuário/repositório
   branch: main
 
 media_folder: public/imagens
