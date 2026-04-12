@@ -23,6 +23,7 @@ collections:
       - label: Título
         name: title
         widget: string
+        hint: "O título do artigo que aparecerá no site"
 
       - label: Data de Publicação
         name: date
@@ -34,6 +35,7 @@ collections:
       - label: Resumo
         name: resumo
         widget: text
+        hint: "Breve descrição do artigo (aparece na listagem)"
 
       - label: Categoria
         name: categoria
@@ -46,6 +48,13 @@ collections:
           - { label: "Dicas Jurídicas", value: "dicas" }
         default: "trabalhista"
 
+      - label: Imagem de Capa
+        name: capa
+        widget: image
+        required: false
+        hint: "Opcional — foto de capa para o artigo (JPG ou PNG)"
+
       - label: Conteúdo
         name: body
         widget: markdown
+        hint: "Escreva o conteúdo completo do artigo aqui"
