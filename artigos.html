@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Artigos jurídicos sobre Direito Trabalhista, Cível, Previdenciário e Criminal. Bruno Teixeira Advocacia — Petrolina, PE." />
+  <title>Artigos | Bruno Teixeira Advocacia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .artigos-hero {
+      padding: 160px 0 80px;
+      background: var(--dark);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      text-align: center;
+    }
+    .artigos-hero .section-label { justify-content: center; }
+    .artigos-hero .section-label::before { display: none; }
+
+    .artigos-grid-section { padding: 80px 0 120px; background: var(--black); }
+
+    .artigos-filtros {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 56px;
+    }
+    .filtro-btn {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: 1px solid rgba(201,168,76,0.25);
+      background: transparent;
+      color: var(--gray-light);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filtro-btn:hover, .filtro-btn.ativo {
+      background: var(--gold-muted);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .artigos-lista {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.08);
+    }
+
+    .artigo-card {
+      background: var(--dark);
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .artigo-card:hover { background: var(--dark-2); }
+
+    .artigo-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .artigo-categoria {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 4px 10px;
+    }
+    .artigo-data {
+      font-size: 11px;
+      color: var(--gray);
+    }
+    .artigo-titulo {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .artigo-resumo {
+      font-size: 0.875rem;
+      color: var(--gray-light);
+      font-weight: 300;
+      line-height: 1.7;
+      flex: 1;
+    }
+    .artigo-link {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 8px;
+    }
+
+    .artigos-vazio {
+      grid-column: 1 / -1;
+      padding: 80px 40px;
+      text-align: center;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 80px;
+      color: var(--gray);
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+    }
+
+    @media (max-width: 1024px) { .artigos-lista { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 640px)  { .artigos-lista { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar" class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-name">BRUNO TEIXEIRA</span>
+        <span class="logo-sub">ADVOCACIA</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#inicio" class="nav-link">Início</a></li>
+        <li><a href="index.html#sobre" class="nav-link">Sobre</a></li>
+        <li><a href="index.html#areas" class="nav-link">Áreas de Atuação</a></li>
+        <li><a href="artigos.html" class="nav-link" style="color:var(--gold)">Artigos</a></li>
+        <li><a href="index.html#contato" class="nav-link">Contato</a></li>
+        <li><a href="index.html#contato" class="nav-cta">Consulta Gratuita</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="artigos-hero">
+      <div class="container">
+        <div class="section-label reveal">Conteúdo Jurídico</div>
+        <h1 class="section-title reveal">Artigos & <em>Publicações</em></h1>
+        <p class="section-desc reveal" style="margin:0 auto; text-align:center;">
+          Conteúdo jurídico acessível sobre seus direitos. Trabalhista, Cível, Previdenciário e mais.
+        </p>
+      </div>
+    </section>
+
+    <section class="artigos-grid-section">
+      <div class="container">
+        <div class="artigos-filtros" id="filtros">
+          <button class="filtro-btn ativo" data-cat="todos">Todos</button>
+          <button class="filtro-btn" data-cat="trabalhista">Trabalhista</button>
+          <button class="filtro-btn" data-cat="civel">Cível</button>
+          <button class="filtro-btn" data-cat="previdenciario">Previdenciário</button>
+          <button class="filtro-btn" data-cat="criminal">Criminal</button>
+          <button class="filtro-btn" data-cat="dicas">Dicas Jurídicas</button>
+        </div>
+
+        <div id="loading">Carregando artigos...</div>
+        <div class="artigos-lista" id="artigosLista" style="display:none;"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top:1px solid rgba(201,168,76,0.1); padding-top:32px;">
+        <p>© 2025 Bruno Teixeira Advocacia. Todos os direitos reservados.</p>
+        <p class="footer-disclaimer">Este site tem caráter meramente informativo e não constitui consultoria jurídica.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/55SEUNUMERO?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta."
+     class="whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.538-2.961-2.654-.087-.116-.708-.943-.708-1.798 0-.856.449-1.277.61-1.45.162-.173.351-.216.469-.216.117 0 .234 0 .334.004.106.003.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.777 1.394.864.174.088.275.073.376-.044.101-.117.434-.506.549-.68.116-.174.232-.145.391-.087.159.058 1.012.477 1.185.564.174.088.289.13.333.203.043.073.043.419-.101.824z"/>
+      <path d="M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652c1.746.943 3.71 1.444 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.48-8.45zm-8.475 18.3h-.005c-1.775 0-3.513-.477-5.031-1.378l-.361-.214-3.741.975.997-3.648-.235-.374c-.99-1.574-1.512-3.393-1.511-5.26.002-5.45 4.437-9.884 9.893-9.884 2.64.001 5.122 1.03 6.988 2.898 1.866 1.869 2.893 4.352 2.892 6.993-.003 5.452-4.437 9.892-9.886 9.892z"/>
+    </svg>
+    <span class="whatsapp-label">Falar no WhatsApp</span>
+  </a>
+
+  <script src="script.js"></script>
+  <script src="artigos.js"></script>
+</body>
+</html>

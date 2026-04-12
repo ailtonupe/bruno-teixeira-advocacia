@@ -1,0 +1,59 @@
+backend:
+  name: github
+  repo: SEU_USUARIO_GITHUB/bruno-teixeira-advocacia  # ← trocar pelo seu usuário/repositório
+  branch: main
+
+media_folder: public/imagens
+public_folder: /imagens
+
+locale: pt
+
+collections:
+  - name: artigos
+    label: Artigos
+    label_singular: Artigo
+    folder: artigos
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - label: Título
+        name: title
+        widget: string
+        hint: "O título do artigo que aparecerá no site"
+
+      - label: Data de Publicação
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        default: ""
+
+      - label: Resumo
+        name: resumo
+        widget: text
+        hint: "Breve descrição do artigo (aparece na listagem)"
+
+      - label: Categoria
+        name: categoria
+        widget: select
+        options:
+          - { label: "Direito Trabalhista", value: "trabalhista" }
+          - { label: "Direito Cível", value: "civel" }
+          - { label: "Direito Previdenciário", value: "previdenciario" }
+          - { label: "Direito Criminal", value: "criminal" }
+          - { label: "Dicas Jurídicas", value: "dicas" }
+        default: "trabalhista"
+
+      - label: Imagem de Capa
+        name: capa
+        widget: image
+        required: false
+        hint: "Imagem opcional para o artigo"
+
+      - label: Conteúdo
+        name: body
+        widget: markdown
+        hint: "Escreva o conteúdo completo do artigo aqui"
