@@ -1,7 +1,11 @@
 backend:
   name: github
-  repo: ailtonupe/bruno-teixeira-advocacia  # ← trocar pelo seu usuário/repositório
+  repo: ailtonupe/bruno-teixeira-advocacia
   branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+
+site_url: https://exquisite-panda-fc8801.netlify.app
 
 media_folder: public/imagens
 public_folder: /imagens

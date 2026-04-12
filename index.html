@@ -497,5 +497,14 @@
   </a>
 
   <script src="script.js"></script>
+
+  <!-- Netlify Identity redirect -->
+<script>
+  if (window.location.hash && window.location.hash.includes('invite_token')) {
+    window.location = '/admin/index.html' + window.location.hash;
+  }
+</script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
 </body>
 </html>
