@@ -1,12 +1,9 @@
-// artigos.js — Carrega e renderiza a listagem de artigos
+// artigos.js — Carrega artigos automaticamente via GitHub API
+// Novos artigos publicados pelo Decap CMS aparecem sem precisar editar este arquivo
 'use strict';
 
-// Lista de artigos conhecidos — adicione o nome do arquivo aqui ao criar um novo
-// O Decap CMS cria os arquivos em /artigos/, então você adiciona o nome aqui
-const ARTIGOS_INDEX = [
-  '2025-04-01-demitido-sem-justa-causa.md',
-  // Adicione novos artigos aqui conforme forem sendo criados
-];
+const GITHUB_REPO  = 'ailtonupe/bruno-teixeira-advocacia';
+const GITHUB_PASTA = 'artigos';
 
 const CATEGORIAS = {
   trabalhista:    'Trabalhista',
@@ -18,23 +15,50 @@ const CATEGORIAS = {
 
 let todosArtigos = [];
 
+async function listarArquivosGitHub() {
+  const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_PASTA}`;
+  const res = await fetch(url, {
+    headers: { 'Accept': 'application/vnd.github.v3+json' }
+  });
+  if (!res.ok) throw new Error('Erro ao listar artigos do GitHub');
+  const arquivos = await res.json();
+  return arquivos
+    .filter(f => f.name.endsWith('.md'))
+    .map(f => f.name);
+}
+
 async function carregarArtigos() {
-  const lista = document.getElementById('artigosLista');
+  const lista   = document.getElementById('artigosLista');
   const loading = document.getElementById('loading');
 
-  const resultados = await Promise.allSettled(
-    ARTIGOS_INDEX.map(async (arquivo) => {
-      const res = await fetch(`artigos/${arquivo}`);
-      if (!res.ok) throw new Error(`Arquivo não encontrado: ${arquivo}`);
-      const texto = await res.text();
-      return parseMarkdown(texto, arquivo);
-    })
-  );
+  try {
+    const arquivos = await listarArquivosGitHub();
 
-  todosArtigos = resultados
-    .filter(r => r.status === 'fulfilled')
-    .map(r => r.value)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (!arquivos.length) {
+      loading.style.display = 'none';
+      lista.style.display = 'grid';
+      lista.innerHTML = '<div class="artigos-vazio">Nenhum artigo publicado ainda.</div>';
+      return;
+    }
+
+    const resultados = await Promise.allSettled(
+      arquivos.map(async (arquivo) => {
+        const res = await fetch(`artigos/${arquivo}`);
+        if (!res.ok) throw new Error(`Nao encontrado: ${arquivo}`);
+        const texto = await res.text();
+        return parseMarkdown(texto, arquivo);
+      })
+    );
+
+    todosArtigos = resultados
+      .filter(r => r.status === 'fulfilled')
+      .map(r => r.value)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  } catch (err) {
+    console.warn('GitHub API indisponivel, tentando fallback local:', err);
+    todosArtigos = await carregarFallbackLocal();
+  }
 
   loading.style.display = 'none';
   lista.style.display = 'grid';
@@ -42,8 +66,24 @@ async function carregarArtigos() {
   iniciarFiltros();
 }
 
+async function carregarFallbackLocal() {
+  const conhecidos = [
+    '2025-04-01-demitido-sem-justa-causa.md',
+  ];
+  const resultados = await Promise.allSettled(
+    conhecidos.map(async (arquivo) => {
+      const res = await fetch(`artigos/${arquivo}`);
+      if (!res.ok) throw new Error();
+      return parseMarkdown(await res.text(), arquivo);
+    })
+  );
+  return resultados
+    .filter(r => r.status === 'fulfilled')
+    .map(r => r.value)
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
 function parseMarkdown(texto, arquivo) {
-  // Extrai frontmatter YAML
   const match = texto.match(/^---\n([\s\S]*?)\n---/);
   const frontmatter = match ? match[1] : '';
   const body = texto.replace(/^---[\s\S]*?---\n/, '').trim();
@@ -54,10 +94,8 @@ function parseMarkdown(texto, arquivo) {
     return m ? m[1].trim() : '';
   }
 
-  const slug = arquivo.replace('.md', '');
-
   return {
-    slug,
+    slug:      arquivo.replace('.md', ''),
     arquivo,
     title:     getField('title'),
     date:      getField('date'),
@@ -100,7 +138,9 @@ function iniciarFiltros() {
     document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
     btn.classList.add('ativo');
     const cat = btn.dataset.cat;
-    const filtrados = cat === 'todos' ? todosArtigos : todosArtigos.filter(a => a.categoria === cat);
+    const filtrados = cat === 'todos'
+      ? todosArtigos
+      : todosArtigos.filter(a => a.categoria === cat);
     renderArtigos(filtrados);
   });
 }
