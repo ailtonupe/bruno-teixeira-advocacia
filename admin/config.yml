@@ -1,11 +1,9 @@
 backend:
-  name: github
-  repo: ailtonupe/bruno-teixeira-advocacia
+  name: git-gateway
   branch: main
-  base_url: https://api.netlify.com
-  auth_endpoint: auth
 
 site_url: https://exquisite-panda-fc8801.netlify.app
+display_url: https://exquisite-panda-fc8801.netlify.app
 
 media_folder: public/imagens
 public_folder: /imagens
@@ -25,7 +23,6 @@ collections:
       - label: Título
         name: title
         widget: string
-        hint: "O título do artigo que aparecerá no site"
 
       - label: Data de Publicação
         name: date
@@ -33,12 +30,10 @@ collections:
         format: "YYYY-MM-DD"
         date_format: "DD/MM/YYYY"
         time_format: false
-        default: ""
 
       - label: Resumo
         name: resumo
         widget: text
-        hint: "Breve descrição do artigo (aparece na listagem)"
 
       - label: Categoria
         name: categoria
@@ -51,13 +46,6 @@ collections:
           - { label: "Dicas Jurídicas", value: "dicas" }
         default: "trabalhista"
 
-      - label: Imagem de Capa
-        name: capa
-        widget: image
-        required: false
-        hint: "Imagem opcional para o artigo"
-
       - label: Conteúdo
         name: body
         widget: markdown
-        hint: "Escreva o conteúdo completo do artigo aqui"
