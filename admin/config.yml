@@ -5,7 +5,7 @@ backend:
 site_url: https://bruno-teixeira-advocacia.netlify.app
 display_url: https://bruno-teixeira-advocacia.netlify.app
 
-media_folder: public/imagens
+media_folder: imagens
 public_folder: /imagens
 
 locale: pt
