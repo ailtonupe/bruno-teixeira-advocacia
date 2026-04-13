@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Bruno Teixeira Advocacia - Especialista em Direito Cível e Trabalhista em Petrolina, PE. Defesa rigorosa dos seus direitos com precisão estratégica." />
-  <title>Bruno Teixeira | Advogado Cível e Trabalhista em Petrolina e Juazeiro</title>
+  <title>Bruno Teixeira | Advogado Cível e Trabalhista em Petrolina</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="/imagens/favicon.png" />
-  <link rel="apple-touch-icon" href="/imagens/favicon.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </head>
 <body>
 
@@ -20,9 +21,9 @@
   <nav id="navbar" class="navbar">
     <div class="nav-container">
       <a href="#inicio" class="nav-logo">
-        <img id="logo-img" src="" alt="Bruno Teixeira Advocacia"
-          style="height:48px; width:auto; display:none; margin-right:12px; vertical-align:middle;" />
-        <div>
+        <img id="logo-img" src="/imagens/logo.png" alt="Bruno Teixeira Advocacia"
+             style="height:48px; width:auto; display:block; object-fit:contain;" />
+        <div id="logo-text" style="display:none;">
           <span class="logo-name">BRUNO TEIXEIRA</span>
           <span class="logo-sub">ADVOCACIA</span>
         </div>
@@ -347,14 +348,14 @@
                 <div class="contato-icon">📞</div>
                 <div>
                   <strong>Telefone / WhatsApp</strong>
-                  <span data-tel>A confirmar com o Dr. Bruno</span>
+                  <span data-tel>(87) 98818-1818</span>
                 </div>
               </div>
               <div class="contato-item">
                 <div class="contato-icon">✉</div>
                 <div>
                   <strong>E-mail</strong>
-                  <a href="#" data-email-link style="color:var(--gold);"><span data-email>A confirmar com o Dr. Bruno</span></a>
+                  <a href="mailto:bruno@gmail.com" data-email-link style="color:var(--gold);">bruno@gmail.com</a>
                 </div>
               </div>
               <div class="contato-item">
@@ -497,7 +498,7 @@
   </footer>
 
   <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/558788269809?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta." 
+  <a href="https://wa.me/5587988181818?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta." 
      class="whatsapp-btn" 
      target="_blank" 
      rel="noopener noreferrer"
@@ -510,73 +511,69 @@
   </a>
 
   <script src="script.js"></script>
+  <script>
+  // Carrega configurações dinâmicas do perfil (atualizáveis pelo painel /admin)
+  fetch('_config/perfil.json')
+    .then(r => r.json())
+    .then(config => {
 
-  <!-- Netlify Identity redirect -->
-<script>
-  if (window.location.hash && window.location.hash.includes('invite_token')) {
-    window.location = '/admin/index.html' + window.location.hash;
-  }
-</script>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-<script>
-fetch('_config/perfil.json')
-  .then(r => r.json())
-  .then(config => {
-
-    // Foto do Sobre
-    if (config.foto_sobre) {
-      const fotoEl = document.querySelector('.sobre-image-frame img');
-      if (fotoEl) fotoEl.src = config.foto_sobre;
-    }
-
-    // OAB no rodapé
-    if (config.oab) {
-      const oabEl = document.querySelector('.footer-oab');
-      if (oabEl) oabEl.textContent = config.oab;
-    }
-
-    // Telefone/WhatsApp — atualiza texto na seção contato
-    if (config.telefone) {
-      const telSpan = document.querySelector('.contato-item span[data-tel]');
-      if (telSpan) telSpan.textContent = '+' + config.telefone.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, '$1 ($2) $3-$4');
-
-      // Atualiza todos os links WhatsApp
-      document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
-        el.href = `https://wa.me/${config.telefone}?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta.`;
-      });
-    }
-
-    // E-mail na seção contato
-    if (config.email) {
-      const emailEl = document.querySelector('.contato-item span[data-email]');
-      if (emailEl) emailEl.textContent = config.email;
-      const emailLink = document.querySelector('a[data-email-link]');
-      if (emailLink) { emailLink.href = `mailto:${config.email}`; emailLink.textContent = config.email; }
-    }
-
-
-    // Logo no navbar
-    if (config.logo) {
-      const logoImg = document.getElementById('logo-img');
-      if (logoImg) {
-        logoImg.src = config.logo;
-        logoImg.style.display = 'inline-block';
+      // Logo no navbar
+      if (config.logo) {
+        const logoImg = document.getElementById('logo-img');
+        if (logoImg) logoImg.src = config.logo;
+      } else {
+        // Se não tiver logo configurada, mostra texto
+        const logoImg = document.getElementById('logo-img');
+        const logoText = document.getElementById('logo-text');
+        if (logoImg) logoImg.style.display = 'none';
+        if (logoText) logoText.style.display = 'block';
       }
-    }
 
-    // Favicon
-    if (config.favicon) {
-      const link = document.querySelector("link[rel='icon']")
-        || document.createElement('link');
-      link.rel = 'icon';
-      link.href = config.favicon;
-      document.head.appendChild(link);
-    }
+      // Favicon dinâmico
+      if (config.favicon) {
+        document.querySelector("link[rel='icon']").href = config.favicon;
+      }
 
-  })
-  .catch(() => {});
-</script>
+      // Foto do Sobre
+      if (config.foto_sobre) {
+        const fotoEl = document.querySelector('.sobre-image-frame img');
+        if (fotoEl) fotoEl.src = config.foto_sobre;
+      }
 
+      // OAB no rodapé
+      if (config.oab) {
+        const oabEl = document.querySelector('.footer-oab');
+        if (oabEl) oabEl.textContent = config.oab;
+      }
+
+      // Telefone — atualiza texto e links WhatsApp
+      if (config.telefone) {
+        const tel = config.telefone.replace(/\D/g, '');
+        const telFormatado = tel.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, '+$1 ($2) $3-$4');
+        const telEl = document.querySelector('[data-tel]');
+        if (telEl) telEl.textContent = telFormatado;
+        document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+          el.href = `https://wa.me/${tel}?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta.`;
+        });
+      }
+
+      // E-mail
+      if (config.email) {
+        const emailLink = document.querySelector('[data-email-link]');
+        if (emailLink) {
+          emailLink.href = `mailto:${config.email}`;
+          emailLink.textContent = config.email;
+        }
+      }
+
+    })
+    .catch(() => {
+      // Se perfil.json não carregar, mostra texto no lugar da logo
+      const logoImg = document.getElementById('logo-img');
+      const logoText = document.getElementById('logo-text');
+      if (logoImg) logoImg.style.display = 'none';
+      if (logoText) logoText.style.display = 'block';
+    });
+  </script>
 </body>
 </html>
