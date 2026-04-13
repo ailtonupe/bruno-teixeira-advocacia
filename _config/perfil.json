@@ -1,7 +1,7 @@
 {
   "logo": "/imagens/logo.png",
   "favicon": "/favicon.ico",
-  "foto_sobre": "/imagens/foto-bruno.jpg",
+  "foto_sobre": "foto-bruno.jpg",
   "nome": "Bruno Teixeira",
   "oab": "OAB/BA Nº 71.020",
   "telefone": "5587988181818",
