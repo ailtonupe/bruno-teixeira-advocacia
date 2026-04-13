@@ -51,6 +51,18 @@ collections:
             name: instagram
             widget: string
             hint: "Só o @usuario, ex: brunoteixeiras.adv"
+          
+          - label: Logomarca (navbar)
+            name: logo
+            widget: image
+            required: false
+            hint: "PNG com fundo transparente. Aparece ao lado do nome no menu."
+
+          - label: Favicon (ícone da aba do navegador)
+            name: favicon
+            widget: image
+            required: false
+            hint: "PNG quadrado 64x64px. Aparece na aba do navegador."
 
   - name: artigos
     label: Artigos
