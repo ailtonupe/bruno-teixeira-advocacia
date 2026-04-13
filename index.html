@@ -506,5 +506,30 @@
 </script>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
+<script>
+// Carrega configurações dinâmicas do perfil
+fetch('_config/perfil.json')
+  .then(r => r.json())
+  .then(config => {
+    // Atualiza foto do sobre
+    if (config.foto_sobre) {
+      const fotoEl = document.querySelector('.sobre-image-frame img');
+      if (fotoEl) fotoEl.src = config.foto_sobre;
+    }
+    // Atualiza WhatsApp
+    if (config.telefone) {
+      document.querySelectorAll('a.whatsapp-btn, a[href*="wa.me"]').forEach(el => {
+        el.href = `https://wa.me/${config.telefone}?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta.`;
+      });
+    }
+    // Atualiza OAB no rodapé
+    if (config.oab) {
+      const oabEl = document.querySelector('.footer-oab');
+      if (oabEl) oabEl.textContent = config.oab;
+    }
+  })
+  .catch(() => {}); // silencia erro se arquivo não existir
+</script>
+
 </body>
 </html>

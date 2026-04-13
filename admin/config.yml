@@ -11,6 +11,47 @@ public_folder: /imagens
 locale: pt
 
 collections:
+  - name: configuracoes
+    label: "Configurações do Site"
+    files:
+      - label: "Foto e Dados Pessoais"
+        name: perfil
+        file: "_config/perfil.json"
+        fields:
+          - label: "Foto Principal (Seção Sobre)"
+            name: foto_sobre
+            widget: image
+            required: false
+            hint: "Foto que aparece na seção Sobre o Advogado"
+
+          - label: "Nome completo"
+            name: nome
+            widget: string
+            default: "Bruno Teixeira"
+
+          - label: "OAB"
+            name: oab
+            widget: string
+            default: "OAB/BA Nº 71.020"
+
+          - label: "Telefone / WhatsApp"
+            name: telefone
+            widget: string
+            hint: "Formato: 5587999999999 (com código do país, sem espaços)"
+
+          - label: "Endereço"
+            name: endereco
+            widget: string
+
+          - label: "E-mail"
+            name: email
+            widget: string
+
+          - label: "Instagram principal"
+            name: instagram
+            widget: string
+            hint: "Só o @usuario, ex: brunoteixeiras.adv"
+
   - name: artigos
     label: Artigos
     label_singular: Artigo
@@ -23,7 +64,6 @@ collections:
       - label: Título
         name: title
         widget: string
-        hint: "O título do artigo que aparecerá no site"
 
       - label: Data de Publicação
         name: date
@@ -35,7 +75,6 @@ collections:
       - label: Resumo
         name: resumo
         widget: text
-        hint: "Breve descrição do artigo (aparece na listagem)"
 
       - label: Categoria
         name: categoria
@@ -52,9 +91,7 @@ collections:
         name: capa
         widget: image
         required: false
-        hint: "Opcional — foto de capa para o artigo (JPG ou PNG)"
 
       - label: Conteúdo
         name: body
         widget: markdown
-        hint: "Escreva o conteúdo completo do artigo aqui"
