@@ -20,7 +20,6 @@ function formatarData(dateStr) {
   return `${parseInt(d)} de ${meses[parseInt(m)-1]} de ${y}`;
 }
 
-// Conversor Markdown → HTML (suporte a h2, h3, bold, italic, listas, links, hr)
 function markdownToHtml(md) {
   return md
     .replace(/^### (.+)$/gm, '<h3>$1</h3>')
@@ -33,9 +32,8 @@ function markdownToHtml(md) {
     .replace(/^\d+\. (.+)$/gm, '<li>$1</li>')
     .replace(/^[-*] (.+)$/gm, '<li>$1</li>')
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" style="color:var(--gold);text-decoration:underline;">$1</a>')
-    // Agrupar <li> sequenciais em <ul>
+    .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;margin:24px 0;display:block;">')
     .replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g, (match) => `<ul>${match}</ul>`)
-    // Parágrafos: linhas que não são tags HTML
     .split('\n\n')
     .map(block => {
       block = block.trim();
@@ -62,14 +60,15 @@ function parseMarkdown(texto) {
     date:      getField('date'),
     resumo:    getField('resumo'),
     categoria: getField('categoria'),
+    capa:      getField('capa'),
     body,
   };
 }
 
 async function carregarArtigo() {
-  const slug = getParam('slug');
+  const slug    = getParam('slug');
   const loading = document.getElementById('artigo-loading');
-  const main = document.getElementById('artigo-main');
+  const main    = document.getElementById('artigo-main');
 
   if (!slug) {
     loading.innerHTML = 'Artigo não encontrado. <a href="artigos.html" style="color:var(--gold)">← Voltar</a>';
@@ -79,20 +78,40 @@ async function carregarArtigo() {
   try {
     const res = await fetch(`artigos/${slug}.md`);
     if (!res.ok) throw new Error('Não encontrado');
-    const texto = await res.text();
+    const texto  = await res.text();
     const artigo = parseMarkdown(texto);
 
-    // Preencher a página
     document.title = `${artigo.title} | Bruno Teixeira Advocacia`;
-    document.getElementById('pageDesc').content = artigo.resumo;
-    document.getElementById('artigo-titulo').textContent = artigo.title;
-    document.getElementById('breadcrumb-titulo').textContent = artigo.title.substring(0, 40) + (artigo.title.length > 40 ? '…' : '');
-    document.getElementById('artigo-cat').textContent = CATEGORIAS[artigo.categoria] || artigo.categoria;
-    document.getElementById('artigo-data').textContent = formatarData(artigo.date);
+    document.getElementById('pageDesc').content        = artigo.resumo;
+    document.getElementById('artigo-titulo').textContent      = artigo.title;
+    document.getElementById('breadcrumb-titulo').textContent  = artigo.title.substring(0, 40) + (artigo.title.length > 40 ? '…' : '');
+    document.getElementById('artigo-cat').textContent         = CATEGORIAS[artigo.categoria] || artigo.categoria;
+    document.getElementById('artigo-data').textContent        = formatarData(artigo.date);
+
+    // Exibir imagem de capa se existir
+    if (artigo.capa) {
+      const heroSection = document.querySelector('.artigo-hero');
+      const capaEl = document.createElement('div');
+      capaEl.style.cssText = `
+        width: 100%;
+        max-height: 420px;
+        overflow: hidden;
+        margin-top: 32px;
+      `;
+      capaEl.innerHTML = `
+        <img 
+          src="${artigo.capa}" 
+          alt="${artigo.title}"
+          style="width:100%; height:420px; object-fit:cover; display:block;"
+        />
+      `;
+      heroSection.appendChild(capaEl);
+    }
+
     document.getElementById('artigo-body').innerHTML = markdownToHtml(artigo.body);
 
     loading.style.display = 'none';
-    main.style.display = 'block';
+    main.style.display    = 'block';
 
   } catch (err) {
     loading.innerHTML = 'Artigo não encontrado. <a href="artigos.html" style="color:var(--gold)">← Voltar para artigos</a>';
