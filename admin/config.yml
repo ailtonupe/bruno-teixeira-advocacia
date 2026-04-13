@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-site_url: https://exquisite-panda-fc8801.netlify.app
-display_url: https://exquisite-panda-fc8801.netlify.app
+site_url: https://bruno-teixeira-advocacia.netlify.app
+display_url: https://bruno-teixeira-advocacia.netlify.app
 
 media_folder: public/imagens
 public_folder: /imagens
