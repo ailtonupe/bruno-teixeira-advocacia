@@ -341,7 +341,14 @@
                 <div class="contato-icon">📞</div>
                 <div>
                   <strong>Telefone / WhatsApp</strong>
-                  <span>A confirmar com o Dr. Bruno</span>
+                  <span data-tel>A confirmar com o Dr. Bruno</span>
+                </div>
+              </div>
+              <div class="contato-item">
+                <div class="contato-icon">✉</div>
+                <div>
+                  <strong>E-mail</strong>
+                  <a href="#" data-email-link style="color:var(--gold);"><span data-email>A confirmar com o Dr. Bruno</span></a>
                 </div>
               </div>
               <div class="contato-item">
@@ -507,28 +514,43 @@
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
 <script>
-// Carrega configurações dinâmicas do perfil
 fetch('_config/perfil.json')
   .then(r => r.json())
   .then(config => {
-    // Atualiza foto do sobre
+
+    // Foto do Sobre
     if (config.foto_sobre) {
       const fotoEl = document.querySelector('.sobre-image-frame img');
       if (fotoEl) fotoEl.src = config.foto_sobre;
     }
-    // Atualiza WhatsApp
-    if (config.telefone) {
-      document.querySelectorAll('a.whatsapp-btn, a[href*="wa.me"]').forEach(el => {
-        el.href = `https://wa.me/${config.telefone}?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta.`;
-      });
-    }
-    // Atualiza OAB no rodapé
+
+    // OAB no rodapé
     if (config.oab) {
       const oabEl = document.querySelector('.footer-oab');
       if (oabEl) oabEl.textContent = config.oab;
     }
+
+    // Telefone/WhatsApp — atualiza texto na seção contato
+    if (config.telefone) {
+      const telSpan = document.querySelector('.contato-item span[data-tel]');
+      if (telSpan) telSpan.textContent = '+' + config.telefone.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, '$1 ($2) $3-$4');
+
+      // Atualiza todos os links WhatsApp
+      document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+        el.href = `https://wa.me/${config.telefone}?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta.`;
+      });
+    }
+
+    // E-mail na seção contato
+    if (config.email) {
+      const emailEl = document.querySelector('.contato-item span[data-email]');
+      if (emailEl) emailEl.textContent = config.email;
+      const emailLink = document.querySelector('a[data-email-link]');
+      if (emailLink) { emailLink.href = `mailto:${config.email}`; emailLink.textContent = config.email; }
+    }
+
   })
-  .catch(() => {}); // silencia erro se arquivo não existir
+  .catch(() => {});
 </script>
 
 </body>
